@@ -1,28 +1,45 @@
-<form id="employee" class="form-group" action="/employee" method="post">
+<form id="employee" action="/employee" method="post">
   <label for="name">Enter employee:</label>
   <input id="name" name="name" type="text">
   <button type="submit" name="button">Click to enter employee</button>
 </form>
 
-<form id="division" class="form-group" action="/division" method="post">
+<form id="division" action="/division" method="post">
   <label for="name">Enter a new division:</label>
   <input type="text" name="name">
   <button type="submit" name="button">Click here to add a division</button>
 </form>
 
-<form id="project" class="form-group" action="/project" method="post">
+<form id="project" action="/project" method="post">
   <label for="name">Enter a new project:</label>
   <input type="text" name="name">
   <button type="submit" name="button">Click here to add a project</button>
 </form>
 
 <% if Employee.all().length > 0  %>
-  <form id="employee" class="form-group" action="/employee" method="post">
+  <form id="employee" action="/employee" method="post">
     <input type="hidden" name="_method" value="delete">
     <% Employee.all().each do |employee|%>
       <label for="employee"><%= employee.name() %></label>
       <input type="checkbox" name="employee" value="<%= employee.id() %>"><br>
       <% end %>
     <button type="submit" name="button">Fire those assholes!!</button>
+  </form>
+<% end %>
+
+<% if @employee.nil?  %>
+  <% if Employee.all().length > 0  %>
+    <h3>Edit Employee</h3>
+    <% Employee.all().each do |employee|%>
+      <a href="/employee/<%= employee.id %>"><%= employee.name %></a>
+    <% end %>
+  <% end %>
+<% else %>
+  <form id="employee-edit" action="/employee" method="post">
+    <input type="hidden" name="_method" value="patch">
+    <input type="hidden" name="employee_id" value="<%= employee.id() %>">
+    <label for="name">New name for employee?</label>
+    <input type="text" name="name">
+    <button type="submit" name="button">Change employee's name</button>
   </form>
 <% end %>
